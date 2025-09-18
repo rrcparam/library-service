@@ -69,6 +69,12 @@ export const addBook = (
     return newBook;
 };
 
+export const getBookById = (id: string): Book | null => {
+    const book = books.find((b) => b.id === id);
+    return book ? structuredClone(book) : null;
+};
+
+
 /**
  * Updates an existing book's information. Certain fields (id, isBorrowed, borrowerId, dueDate)
  * cannot be modified through this function as they are managed by other operations.
