@@ -18,8 +18,38 @@ export const getAllBooks = (req: Request, res: Response): void => {
 
 export const addBook = (req: Request, res: Response): void => {
     try {
-        const newBook = req.body;
+        let { title, author, genre } = req.body;
+
+        
+        title = title?.trim();
+        author = author?.trim();
+        genre = genre?.trim();
+
+        // This is for Validation
+        if (!title) {
+            res.status(HTTP_STATUS.BAD_REQUEST).json({
+                message: "Title is required and cannot be empty",
+            });
+            return;
+        }
+
+        if (!author) {
+            res.status(HTTP_STATUS.BAD_REQUEST).json({
+                message: "Author is required and cannot be empty",
+            });
+            return;
+        }
+
+        if (!genre) {
+            res.status(HTTP_STATUS.BAD_REQUEST).json({
+                message: "Genre is required and cannot be empty",
+            });
+            return;
+        }
+
+        const newBook = { title, author, genre };
         const createdBook = bookService.addBook(newBook);
+
         res.status(HTTP_STATUS.CREATED).json({
             message: "Book added",
             data: createdBook,
@@ -30,6 +60,7 @@ export const addBook = (req: Request, res: Response): void => {
         });
     }
 };
+
 
 export const updateBook = (req: Request, res: Response): void => {
     try {
